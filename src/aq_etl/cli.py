@@ -88,7 +88,10 @@ def run(
         typer.echo("Incremental run plan:")
         _execute(ranges, "incremental")
     elif start and end:
-        ranges = pipeline.fixed_ranges(settings, _parse_date(start), _parse_date(end))
+        try:
+            ranges = pipeline.fixed_ranges(settings, _parse_date(start), _parse_date(end))
+        except ValueError as exc:
+            raise typer.BadParameter(str(exc)) from exc
         typer.echo("Explicit range run:")
         _execute(ranges, "range")
     else:

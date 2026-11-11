@@ -62,3 +62,6 @@ def test_cli_run_requires_a_mode(tmp_path):
     config.write_text('[[cities]]\nname = "Delhi"\nlatitude = 1\nlongitude = 1\n', encoding="utf-8")
     result = CliRunner().invoke(app, ["--config", str(config), "run"])
     assert result.exit_code != 0
+    args = ["--config", str(config), "run", "--start", "2026-11-02", "--end", "2026-11-01"]
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 2 and "before" in result.output

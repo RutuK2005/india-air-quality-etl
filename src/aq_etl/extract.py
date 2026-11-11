@@ -40,7 +40,8 @@ def build_session(max_retries: int = 5, backoff_factor: float = 1.0) -> requests
     """Create a `requests.Session` that retries transient failures with exponential backoff.
 
     Retries happen on connection errors and on HTTP 429/5xx. With backoff_factor=1
-    the waits are roughly 1s, 2s, 4s, 8s... and a `Retry-After` header is honoured.
+    urllib3 retries once immediately, then waits 2s, 4s, 8s, ... between attempts;
+    a `Retry-After` header from the server takes precedence.
     """
     retry = Retry(
         total=max_retries,
