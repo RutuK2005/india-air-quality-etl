@@ -1,0 +1,53 @@
+name: Scheduled ETL
+
+# Runs the incremental pipeline once a day and publishes the warehouse and
+# exports as a workflow artifact. Data is never committed to the repository.
+on:
+  schedule:
+    - cron: "30 2 * * *" # 02:30 UTC = 08:00 IST, after the previous IST day is complete
+  workflow_dispatch:
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install
+        run: pip install -e .
+
+      # Runners start empty. Restoring the newest cached warehouse brings back
+      # the watermarks, so --incremental only fetches days since the last run.
+      # (On a cache miss there is no watermark and it loads the last 7 days.)
+      - name: Restore previous warehouse
+        uses: actions/cache@v4
+        with:
+          path: data/warehouse.duckdb
+          key: warehouse-${{ github.run_id }}
+          restore-keys: warehouse-
+
+      - name: Run incremental pipeline
+        run: etl run --incremental
+
+      - name: Status and report
+        run: |
+          etl status
+          etl report
+
+      - name: Export for BI tools
+        run: etl export
+
+      - name: Upload warehouse and exports
+        uses: actions/upload-artifact@v4
+        with:
+          name: air-quality-warehouse-${{ github.run_id }}
+          path: |
+            data/warehouse.duckdb
+            data/exports/
+          retention-days: 14
