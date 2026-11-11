@@ -53,9 +53,7 @@ def check_schema(df: pd.DataFrame, table: str, expected: list[str]) -> CheckResu
     """All expected columns exist and measure columns are numeric."""
     missing = [c for c in expected if c not in df.columns]
     non_numeric = [
-        c
-        for c in MEASURE_COLUMNS
-        if c in df.columns and not pd.api.types.is_numeric_dtype(df[c])
+        c for c in MEASURE_COLUMNS if c in df.columns and not pd.api.types.is_numeric_dtype(df[c])
     ]
     problems = []
     if missing:
