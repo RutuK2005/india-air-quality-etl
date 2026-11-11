@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual env
+.venv/
+venv/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Pipeline data (bronze JSON, DuckDB warehouse, exports) - never committed
+data/
+*.duckdb
+*.duckdb.wal
+*.parquet
+spark-warehouse/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

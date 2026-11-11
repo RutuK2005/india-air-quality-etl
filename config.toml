@@ -1,0 +1,72 @@
+# Pipeline configuration. Paths are relative to the directory you run `etl` from.
+
+[pipeline]
+warehouse_path = "data/warehouse.duckdb"
+raw_dir = "data/raw"
+export_dir = "data/exports"
+sql_dir = "sql"
+timezone = "Asia/Kolkata"
+# First incremental run for a city with no watermark starts this many days back.
+initial_lookback_days = 7
+# Long date ranges are split into chunks of at most this many days per API call.
+chunk_days = 31
+# Polite rate limiting: minimum seconds between two API requests.
+min_request_interval_s = 0.3
+# Data-quality gate: max share of nulls allowed in a measure column.
+max_null_fraction = 0.1
+
+[api]
+weather_forecast_url = "https://api.open-meteo.com/v1/forecast"
+weather_archive_url = "https://archive-api.open-meteo.com/v1/archive"
+air_quality_url = "https://air-quality-api.open-meteo.com/v1/air-quality"
+# The archive (ERA5) lags real time by ~5 days; newer dates use the forecast API.
+archive_lag_days = 6
+timeout_s = 30
+max_retries = 5
+weather_variables = [
+    "temperature_2m",
+    "relative_humidity_2m",
+    "precipitation",
+    "wind_speed_10m",
+]
+air_quality_variables = ["pm2_5", "pm10", "nitrogen_dioxide", "ozone"]
+
+[[cities]]
+name = "Delhi"
+latitude = 28.6139
+longitude = 77.2090
+
+[[cities]]
+name = "Mumbai"
+latitude = 19.0760
+longitude = 72.8777
+
+[[cities]]
+name = "Kolkata"
+latitude = 22.5726
+longitude = 88.3639
+
+[[cities]]
+name = "Chennai"
+latitude = 13.0827
+longitude = 80.2707
+
+[[cities]]
+name = "Bengaluru"
+latitude = 12.9716
+longitude = 77.5946
+
+[[cities]]
+name = "Hyderabad"
+latitude = 17.3850
+longitude = 78.4867
+
+[[cities]]
+name = "Pune"
+latitude = 18.5204
+longitude = 73.8567
+
+[[cities]]
+name = "Ahmedabad"
+latitude = 23.0225
+longitude = 72.5714
