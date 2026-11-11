@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "india-air-quality-etl"
 version = "0.1.0"
 description = "Incremental ETL pipeline: Open-Meteo weather + air quality for Indian cities into a DuckDB warehouse."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Rutuparn Kulkarni" }]
 requires-python = ">=3.12"
 dependencies = [
