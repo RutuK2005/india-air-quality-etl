@@ -1,5 +1,7 @@
 # india-air-quality-etl
 
+[![CI](https://github.com/RutuK2005/india-air-quality-etl/actions/workflows/ci.yml/badge.svg)](https://github.com/RutuK2005/india-air-quality-etl/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/python-3.12%2B-3776AB?logo=python&logoColor=white) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 An incremental ETL pipeline that pulls hourly **weather and air-quality data for eight major
 Indian cities** from the free, keyless [Open-Meteo](https://open-meteo.com/) APIs, lands the
 raw JSON as a bronze layer, cleans and joins it with pandas (silver), aggregates daily city
